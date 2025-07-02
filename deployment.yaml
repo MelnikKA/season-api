@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: season-api-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: season-api
+  template:
+    metadata:
+      labels:
+        app: season-api
+    spec:
+      containers:
+        - name: season-api
+          image: season-api:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "500m"
