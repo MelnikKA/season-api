@@ -1,4 +1,4 @@
-name: C++ CI with Drogon and Qt (qmake)
+name: C++ CI with Drogon and Qt
 
 on:
   push:
@@ -11,26 +11,23 @@ jobs:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Install dependencies
+    - name: Install dependencies via Homebrew
       run: |
         brew update
         brew install qt@5 drogon jsoncpp openssl boost
-        echo 'PATH="/usr/local/opt/qt@5/bin:$PATH"' >> $GITHUB_ENV
 
-    - name: Build main project
+    - name: Build main project with qmake
       run: |
-        source $GITHUB_ENV
-        qmake DrogonApiExample.pro
+        /usr/local/opt/qt@5/bin/qmake untitled.pro
         make
 
     - name: Build tests
       run: |
-        source $GITHUB_ENV
         cd tests
-        qmake test_seasons.pro
+        /usr/local/opt/qt@5/bin/qmake tests.pro
         make
 
     - name: Run tests
