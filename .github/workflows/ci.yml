@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies (Homebrew)
+        run: |
+          brew update
+          brew install qt5 drogon jsoncpp openssl boost
+
+      - name: Build main project
+        run: |
+          cd .
+          qmake untitled.pro
+          make
+
+      - name: Build tests
+        run: |
+          cd tests
+          qmake test.pro
+          make
+
+      - name: Run tests
+        run: |
+          ./tests/test_runner
